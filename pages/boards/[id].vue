@@ -53,14 +53,32 @@ const fetchBoardData = async () => {
   const token = localStorage.getItem('jwt');
   try {
     const { public: { baseApi } } = useRuntimeConfig();
+
+    // 게시글 데이터 가져오기
     boardData.value = await $fetch(`/boards/bulletins/${id}`, {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
     });
+
+    // 북마크 상태 가져오기
+    const isBookmarked:boolean = await $fetch('/bookmarks/status', {
+      baseURL: baseApi,
+      headers: token ? { Authorization: token } : undefined,
+      params: {
+        targetId: id, // 게시글 ID
+        target: 'BULLETIN', // 북마크 대상 타입
+      },
+    });
+
+    // 북마크 상태 업데이트
+    if (boardData.value?.data) {
+      boardData.value.data.isBookmarked = isBookmarked;
+    }
   } catch (error) {
     console.error('Error fetching board data:', error);
   }
 };
+
 
 // 게시글 삭제 함수
 const deleteBoard = async () => {
@@ -73,7 +91,7 @@ const deleteBoard = async () => {
       headers: token ? { Authorization: token } : undefined,
     });
     alert('게시글이 삭제되었습니다.');
-    router.push(baseFrontUrl); // 삭제 후 목록 페이지로 이동
+    router.push("/"); // 삭제 후 목록 페이지로 이동
   } catch (error) {
     console.error('Error deleting board:', error);
     alert('게시글 삭제에 실패했습니다.');
