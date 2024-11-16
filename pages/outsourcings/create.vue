@@ -45,17 +45,46 @@ const generateRandomData = () => {
     return date.toISOString().split('T')[0]; // yyyy-mm-dd 형식
   };
 
-  title.value = `랜덤 제목 ${randomString(5)}`;
-  content.value = `랜덤 내용 ${randomString(20)}`;
-  preferential.value = `랜덤 우대사항 ${randomString(10)}`;
-  workType.value = ['풀타임', '파트타임', '프리랜서'][Math.floor(Math.random() * 3)];
-  price.value = Math.floor(Math.random() * 100000) + 50000; // 50,000 ~ 150,000
+  // 현실적인 데이터 풀
+  const randomTitles = [
+    '웹사이트 리뉴얼 프로젝트',
+    '모바일 앱 개발',
+    'API 서버 구축',
+    '쇼핑몰 기능 추가',
+    '데이터베이스 최적화 작업',
+  ];
+
+  const randomContents = [
+    '기존 웹사이트를 최신 디자인 트렌드에 맞춰 리뉴얼합니다.',
+    'iOS 및 Android용 모바일 애플리케이션 개발을 진행합니다.',
+    'RESTful API 서버를 설계 및 개발합니다.',
+    '전자상거래 플랫폼에 새로운 결제 기능을 추가합니다.',
+    'MySQL 데이터베이스 성능을 최적화합니다.',
+  ];
+
+  const randomPreferentials = [
+    'React와 Vue.js 경험자 우대',
+    'Node.js 및 Spring Boot 경험자 우대',
+    'Docker 및 Kubernetes 활용 경험 우대',
+    'MongoDB 및 Redis 사용 경험 우대',
+    '클라우드 배포 경험자 우대 (AWS, Azure)',
+  ];
+
+  const randomWorkTypes = ['풀타임', '파트타임', '프리랜서'];
+  const randomAreas = ['SEOUL', 'BUSAN', 'DAEGU', 'INCHEON', 'GWANGJU', 'DAEJEON', 'ULSAN', 'JEJU'];
+
+  title.value = randomTitles[Math.floor(Math.random() * randomTitles.length)];
+  content.value = randomContents[Math.floor(Math.random() * randomContents.length)];
+  preferential.value = randomPreferentials[Math.floor(Math.random() * randomPreferentials.length)];
+  workType.value = randomWorkTypes[Math.floor(Math.random() * randomWorkTypes.length)];
+  price.value = Math.floor(Math.random() * 1000000) + 100000; // 100,000 ~ 1,100,000
   recruitStartDate.value = randomDate(new Date(), new Date(2023, 11, 31));
   recruitEndDate.value = randomDate(new Date(2024, 0, 1), new Date(2024, 11, 31));
   workStartDate.value = randomDate(new Date(2024, 0, 1), new Date(2024, 5, 30));
   workEndDate.value = randomDate(new Date(2024, 6, 1), new Date(2024, 11, 31));
-  area.value = areaOptions[Math.floor(Math.random() * areaOptions.length)];
+  area.value = randomAreas[Math.floor(Math.random() * randomAreas.length)];
 };
+
 
 // 날짜와 시간을 'yyyy-MM-ddT'HH:mm:ss' 형식으로 반환
 const formatDate = (date: string): string => {
@@ -122,7 +151,7 @@ const createOutsourcing = async () => {
 
     // 성공 메시지 및 페이지 이동
     feedbackMessage.value = '외주가 성공적으로 생성되었습니다!';
-    router.push('/'); // 성공 후 목록 페이지로 이동
+    router.push('/outsourcings/recruitment'); // 성공 후 목록 페이지로 이동
   } catch (error) {
     console.error('Error creating outsourcing:', error);
     feedbackMessage.value = '외주 생성에 실패했습니다.';

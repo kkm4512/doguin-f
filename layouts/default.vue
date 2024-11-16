@@ -57,6 +57,9 @@
                 <li>
                   <a @click="goToOutsourcingPage('recruitment')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">채용/공고 확인</a>
                 </li>
+                <li>
+                  <a @click="goToOutsourcingPage('matching')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">매칭 목록</a>
+                </li>                
               </ul>
             </div>
           </li>
@@ -121,6 +124,9 @@ const goToOutsourcingPage = (type) => {
     case 'recruitment':
       router.push('/outsourcings/recruitment');
       break;
+    case 'matching':
+      router.push('/outsourcings/matching');
+      break;      
     default:
       break;
   }
