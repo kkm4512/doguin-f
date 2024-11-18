@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { BoardWithAnswer } from '../[id].vue';
+import type { AnswerResponse } from '../../[id].vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -13,11 +13,23 @@ const boardData = ref({
   content: '',
 });
 
-const files = ref<{ id: number, path: string }[]>([]); // 파일 데이터를 id와 path로 저장
-const selectedFileIds = ref<number[]>([]); // 체크된 파일들의 id를 저장
+interface BoardWithAnswer {
+  data: {
+    id: number;
+    title: string;
+    content: string;
+    view: number;
+    isBookmarked: boolean; // 북마크 상태 추가
+    response: AnswerResponse;
+    filePaths: string[];
+  };
+}
 
-// 파일 업로드를 위한 ref
-const selectedFiles = ref<File[]>([]);
+const files = ref<{ id: number; path: string }[]>([]); // 파일 데이터를 id와 path로 저장
+const selectedFileIds = ref<number[]>([]); // 체크된 파일들의 id를 저장
+const selectedFiles = ref<File[]>([]); // 새로 업로드된 파일들을 저장
+
+// 파일 선택 핸들러
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement; // 타입 캐스팅
   if (target.files) {
@@ -31,7 +43,7 @@ const fetchBoardData = async () => {
   const token = localStorage.getItem('jwt');
   try {
     const { public: { baseApi } } = useRuntimeConfig();
-    const data: BoardWithAnswer = await $fetch(`/boards/bulletins/${id}`, {
+    const data: BoardWithAnswer = await $fetch(`/boards/events/${id}`, {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
     });
@@ -63,19 +75,18 @@ const getFileIds = async () => {
     // 파일 경로 추출 및 정리
     const filePaths = files.value.map(file => file.path.trim()); // 앞뒤 공백 제거
 
-    // URL 인코딩
-    const encodedFilePaths = encodeURIComponent(JSON.stringify(filePaths)); // JSON 문자열로 인코딩
+    // JSON 형태로 파일 경로를 문자열로 변환 후 URL 인코딩
+    const encodedFilePaths = encodeURIComponent(JSON.stringify(filePaths));
 
     // 서버로 요청 보내기
-    const response: number[] = await $fetch('/attachments', {
+    const response: number[] = await $fetch(`/attachments`, {
       method: 'GET',
       baseURL: baseApi,
       headers: {
         Authorization: token,
-        'Content-Type': 'application/json',
       },
-      params: { 
-        filePaths: encodedFilePaths, // URL 인코딩된 문자열 전달
+      query: {
+        filePaths: encodedFilePaths, // URL 인코딩된 파일 경로 전달
       },
     });
 
@@ -83,8 +94,8 @@ const getFileIds = async () => {
 
     // 서버에서 받은 ID를 files에 매핑
     files.value = files.value.map((file, index) => ({
-      ...file,
-      id: response[index], // 서버에서 받은 ID 매핑
+      id: response[index],
+      path: file.path,
     }));
 
     console.log('Updated files with IDs:', files.value);
@@ -94,6 +105,7 @@ const getFileIds = async () => {
 };
 
 
+// 게시글 수정 함수
 const updateBoard = async () => {
   const token = localStorage.getItem('jwt');
 
@@ -116,32 +128,28 @@ const updateBoard = async () => {
 
   try {
     const { public: { baseApi } } = useRuntimeConfig();
-    await $fetch(`/boards/bulletins/${id}`, {
+    await $fetch(`/boards/events/${id}`, {
       method: 'PUT',
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined, // Content-Type 생략
       body: formData,
     });
     alert('게시글이 수정되었습니다.');
-    router.push(`/boards/${id}`);
+    router.push(`/boards/events/${id}`);
   } catch (error) {
     console.error('Error updating board:', error);
     alert('게시글 수정에 실패했습니다.');
   }
 };
 
-
-
+// 파일 선택 상태 변경
 const toggleFileSelection = (fileId: number) => {
-  // 이미 선택된 ID인지 확인
   const isSelected = selectedFileIds.value.includes(fileId);
 
   if (isSelected) {
-    // 선택 해제: 해당 ID를 배열에서 제거
     selectedFileIds.value = selectedFileIds.value.filter(id => id !== fileId);
   } else {
-    // 선택 추가: 배열에 ID 추가
-    selectedFileIds.value = [...selectedFileIds.value, fileId];
+    selectedFileIds.value.push(fileId);
   }
 };
 

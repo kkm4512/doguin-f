@@ -18,7 +18,7 @@ const closeModal = () => {
   selectedFile.value = undefined;
 };
 
-interface AnswerResponse {
+export interface AnswerResponse {
   content: {
     id: string;
     content: string;
@@ -28,6 +28,7 @@ interface AnswerResponse {
 export interface BoardWithAnswer {
   data: {
     id: number;
+    userId: number;
     title: string;
     content: string;
     view: number;
@@ -59,6 +60,7 @@ const fetchBoardData = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
     });
+    console.log(boardData.value?.data)
 
     // 북마크 상태 가져오기
     const isBookmarked:boolean = await $fetch('/bookmarks/status', {
@@ -155,6 +157,9 @@ onMounted(fetchBoardData);
 <template>
   <div v-if="boardData" class="flex justify-center items-center min-h-screen bg-gray-100 p-6">
     <div class="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-lg p-6 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <div>
+        <Report :data="boardData.data" targetType="BULLETIN" />
+      </div>        
       <h5 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-4 text-center">{{ boardData.data.title }}</h5>
       <p class="font-normal text-gray-700 dark:text-gray-400 mb-4 text-justify">{{ boardData.data.content }}</p>
 

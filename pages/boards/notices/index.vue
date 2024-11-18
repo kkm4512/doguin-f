@@ -53,7 +53,7 @@ const submitBulletin = async () => {
 
 <template>
   <div class="container mx-auto p-8 bg-white rounded-lg shadow-lg mt-10">
-    <h1 class="text-3xl font-bold text-center mb-8 text-indigo-600">Notice 작성</h1>
+    <h1 class="text-3xl font-bold text-center mb-8 text-indigo-600">Event 작성</h1>
     <form @submit.prevent="submitBulletin" enctype="multipart/form-data">
       <div class="mb-6">
         <label for="title" class="block text-lg font-medium text-gray-700 mb-2">제목</label>

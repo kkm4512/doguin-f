@@ -19,9 +19,14 @@ const closeModal = () => {
 };
 
 // 날짜 포맷 함수
-const formatDate = (dateTime: string): string => {
-  const date = new Date(dateTime);
-  return date.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식으로 변환
+const formatDate = (dateTimeArray: number[]): string => {
+  // 배열에서 각 값을 추출
+  const [year, month, day] = dateTimeArray;
+
+  // "YYYY-MM-DD" 형식으로 변환
+  // month는 0부터 시작하지 않는 형식이므로 그대로 사용 가능
+  const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  return formattedDate;
 };
 
 // 인터페이스 정의
@@ -32,10 +37,10 @@ export interface OutsourcingDetail {
     content: string;
     price: number;
     area: string;
-    recruit_start_date: string;
-    recruit_end_date: string;
-    work_start_date: string;
-    work_end_date: string;
+    recruit_start_date: number[];
+    recruit_end_date: number[];
+    work_start_date: number[];
+    work_end_date: number[];
     isBookmarked: boolean;
     filePaths: string[];
   };

@@ -112,22 +112,22 @@ const signin = async () => {
 // 각 플랫폼 로그인 함수
 const kakaoLogin = () => {
   const { public: { kakaoLoginUrl } } = useRuntimeConfig();
-  window.location.href = kakaoLoginUrl;
+  window.location.href = kakaoLoginUrl + `&state=${window.location.origin}`;
 };
 
 const naverLogin = () => {
   const { public: { naverLoginUrl } } = useRuntimeConfig();
-  window.location.href = naverLoginUrl;
+  window.location.href = naverLoginUrl + `&state=${window.location.origin}`;
 };
 
 const githubLogin = () => {
   const { public: { githubLoginUrl } } = useRuntimeConfig();
-  window.location.href = githubLoginUrl;
+  window.location.href = githubLoginUrl + `&state=${window.location.origin}`;
 };
 
 const googleLogin = () => {
   const { public: { googleLoginUrl } } = useRuntimeConfig();
-  window.location.href = googleLoginUrl;
+  window.location.href = googleLoginUrl + `&state=${window.location.origin}`;
 };
 </script>
 

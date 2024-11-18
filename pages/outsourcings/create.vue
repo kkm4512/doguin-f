@@ -131,6 +131,7 @@ const createOutsourcing = async () => {
       work_end_date: formatDate(workEndDate.value),            // 날짜 + 현재 시간
       area: area.value,
     };
+    console.log(outsourcingRequestCreate)
 
     // JSON 데이터를 Blob으로 변환 후 FormData에 추가
     formData.append(

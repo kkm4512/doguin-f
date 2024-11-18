@@ -1,6 +1,46 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRuntimeConfig } from '#app';
+import { useWebSocket } from '~/composables/useWebSocket';
+
+const applicantId = ref<number | null>(null); // 대상 사용자 ID
+const chatStarted = ref<boolean>(false);
+
+// WebSocket 유틸리티
+const { connect, subscribe, sendMessage: wsSendMessage } = useWebSocket();
+
+// 채팅방 생성 및 종료 관리
+const startChat = () => {
+  chatStarted.value = true;
+  if (selectedMatchingId.value) {
+    console.log(`채팅 시작 for Matching ID: ${selectedMatchingId.value}`);
+  } else {
+    console.error("매칭 ID가 선택되지 않았습니다.");
+  }
+};
+
+const leaveChat = () => {
+  chatStarted.value = false;
+
+  if (selectedMatchingId.value) {
+    console.log(`채팅 종료 for Room ID: ${selectedMatchingId.value}`);
+    // WebSocket을 통해 "leave" 메시지 전송
+    wsSendMessage('/app/chat/leave', { roomId: selectedMatchingId.value });
+  }
+};
+
+interface RoomResponse {
+  roomId: string;
+  creatorId: number;
+  applicantId: number;
+  messages: MessageResponse[];
+}
+
+interface MessageResponse {
+  messageId: string;
+  senderId: number;
+  content: string;
+}
 
 // 매칭 응답 인터페이스 정의
 interface MatchingResponse {
@@ -40,6 +80,10 @@ const errorMessage = ref<string | null>(null);
 const currentPage = ref(0);
 const totalPages = ref(1);
 const selectedStatus = ref<string | null>(null); // 상태 필터링
+
+watch(selectedMatchingId, (newValue) => {
+  applicantId.value = newValue;
+});
 
 // API 요청 함수
 const fetchMatchings = async (page = 0, status: string | null = null) => {
@@ -114,7 +158,9 @@ const updateStatusFilter = (status: string | null) => {
 };
 
 // 컴포넌트 초기화
-onMounted(() => fetchMatchings());
+onMounted(() => {
+  fetchMatchings();
+});
 </script>
 
 <template>
@@ -215,6 +261,26 @@ onMounted(() => fetchMatchings());
           거절
         </button>
       </div>
+    </div>
+    <div class="mt-4 flex justify-center space-x-4">
+      <button
+        @click="startChat"
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        :disabled="!selectedMatchingId"
+        v-if="!chatStarted"
+      >
+        채팅 시작
+      </button>
+      <button
+        @click="leaveChat"
+        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        v-if="chatStarted"
+      >
+        채팅 떠나기
+      </button>
+    </div>
+    <div v-if="chatStarted" class="mt-4">
+      <ChatRoom :room-id="applicantId" />
     </div>
   </div>
 </template>
