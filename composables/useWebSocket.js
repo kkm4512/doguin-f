@@ -4,7 +4,7 @@ const { public: { baseWebSocketUrl } } = useRuntimeConfig();
 
 export const useWebSocket = () => {
   const client = new Client({
-    brokerURL: `ws://${baseWebSocketUrl}/ws`, // WebSocket 엔드포인트
+    brokerURL: `wss://${baseWebSocketUrl}/ws`, // WebSocket 엔드포인트
     connectHeaders: {
       Authorization: localStorage.getItem('jwt') || '',
     },
