@@ -125,6 +125,7 @@ export interface ResponseEntity<T> {
           page,
           size: pageSize,
         },
+        mode: 'cors'
       });
       console.log(response)
   

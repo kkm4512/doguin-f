@@ -103,6 +103,7 @@ const fetchMatchings = async (page = 0, status: string | null = null) => {
         sort: 'desc',
         status, // 선택된 상태 필터 추가
       },
+      mode: 'cors'
     });
 
     matchings.value = response.data.content;
@@ -133,6 +134,7 @@ const updateMatchingStatus = async (status: 'YES' | 'NO') => {
         'Content-Type': 'application/json',
       },
       body: { status },
+      mode: 'cors'
     });
 
     alert(`매칭이 ${status === 'NO' ? '거절' : '수락'}되었습니다.`);

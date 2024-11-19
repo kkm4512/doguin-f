@@ -38,7 +38,8 @@ const submitBulletin = async () => {
       headers: {
         'Accept': 'application/json',
         "Authorization": token
-      }
+      },
+      mode: 'cors'
     });
 
     console.log('게시물 작성 성공:', result);

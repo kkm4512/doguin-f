@@ -40,6 +40,7 @@ const fetchEventBoardData = async () => {
     const response: ApiResponse<BoardEnvetWithAnswer> = await $fetch(`/boards/events/${id}`, {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
     eventBoardData.value = response.data;
   } catch (error) {
@@ -56,6 +57,7 @@ const deleteEventBoard = async () => {
       method: 'DELETE',
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
     alert('게시글이 삭제되었습니다.');
     router.push("/"); // 삭제 후 이벤트 게시글 목록 페이지로 이동
@@ -82,6 +84,7 @@ const submitComment = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
       body: { content: newComment.value },
+      mode: 'cors'
     });
 
     await fetchEventBoardData(); // 댓글 작성 후 게시글 데이터 다시 불러오기

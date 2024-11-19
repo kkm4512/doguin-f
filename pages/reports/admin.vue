@@ -128,6 +128,7 @@ export interface ReportView {
         baseURL: config.public.baseApi,
         headers: token ? { Authorization: token } : undefined,
         params: { page, size: pageSize },
+        mode: 'cors'
       });
   
       reports.value = response.data.content;
@@ -155,6 +156,7 @@ export interface ReportView {
         method: 'PUT',
         baseURL: config.public.baseApi,
         headers: token ? { Authorization: token } : undefined,
+        mode: 'cors'
       });
   
       alert('신고가 승인되었습니다.');
@@ -179,6 +181,7 @@ export interface ReportView {
         method: 'PUT',
         baseURL: config.public.baseApi,
         headers: token ? { Authorization: token } : undefined,
+        mode: 'cors'
       });
   
       alert('신고가 반려되었습니다.');

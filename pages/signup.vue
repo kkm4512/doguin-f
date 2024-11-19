@@ -92,6 +92,7 @@
     headers: {
       'Accept': 'application/json' // JSON 응답을 기대하는 경우
     },
+    mode: 'cors'
   })
   console.log('회원가입 성공:', response)
   

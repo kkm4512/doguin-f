@@ -34,6 +34,7 @@ const fetchBoardData = async () => {
     const data: BoardWithAnswer = await $fetch(`/boards/bulletins/${id}`, {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
 
     // 게시글 데이터 저장
@@ -77,6 +78,7 @@ const getFileIds = async () => {
       params: { 
         filePaths: encodedFilePaths, // URL 인코딩된 문자열 전달
       },
+      mode: 'cors'
     });
 
     console.log('파일 PK값:', response);
@@ -121,6 +123,7 @@ const updateBoard = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined, // Content-Type 생략
       body: formData,
+      mode: 'cors'
     });
     alert('게시글이 수정되었습니다.');
     router.push(`/boards/${id}`);

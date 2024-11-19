@@ -31,6 +31,7 @@ const fetchEventBoards = async () => {
         page: 1, // 1페이지
         size: 5, // 최대 5개씩 표시
       },
+      mode: 'cors'
     });
 
     eventBoards.value = response.data.content; // 이벤트 게시글 데이터 저장

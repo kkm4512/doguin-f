@@ -41,6 +41,7 @@ const fetchOutsourcingData = async () => {
     const data: OutsourcingDetail = await $fetch(`/outsourcings/${id}`, {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
     console.log(data)
 
@@ -85,6 +86,7 @@ const getFileIds = async () => {
         Authorization: token,
         'Content-Type': 'application/json',
       },
+      mode: 'cors',
       params: { filePaths: encodedFilePaths },
     });
 
@@ -130,6 +132,7 @@ const updateOutsourcing = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
       body: formData,
+      mode: 'cors'
     });
     alert('외주가 수정되었습니다.');
     router.push(`/outsourcings/recruitment/${id}`);

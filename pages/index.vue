@@ -61,6 +61,7 @@ const fetchBoardTitles = async (page: number, title = '') => {
         size: 10,
         title, // 검색어 추가
       },
+      mode: 'cors'
     });
     boards.value = response.data.content.map((item) => ({
       id: item.id,
@@ -83,6 +84,7 @@ const fetchPopularBoards = async () => {
         page: 1, // 1페이지
         size: 3, // 3개씩 가져옴
       },
+      mode: 'cors'
     });
 
     const boardIds: number[] = response.data.content; // 인기 게시글 ID 배열
@@ -94,6 +96,7 @@ const fetchPopularBoards = async () => {
       try {
         const response = await $fetch<ApiResponse<BoardResponse>>(`/boards/bulletins/${id}`, {
           baseURL: baseApi,
+          mode: 'cors'
         });
         return response.data; // 정상적으로 가져온 게시글 데이터 반환
       } catch (error) {

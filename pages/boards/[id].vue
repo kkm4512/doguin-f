@@ -59,6 +59,7 @@ const fetchBoardData = async () => {
     boardData.value = await $fetch(`/boards/bulletins/${id}`, {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
     console.log(boardData.value?.data)
 
@@ -70,6 +71,7 @@ const fetchBoardData = async () => {
         targetId: id, // 게시글 ID
         target: 'BULLETIN', // 북마크 대상 타입
       },
+      mode: 'cors'
     });
 
     // 북마크 상태 업데이트
@@ -91,6 +93,7 @@ const deleteBoard = async () => {
       method: 'DELETE',
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
     alert('게시글이 삭제되었습니다.');
     router.push("/"); // 삭제 후 목록 페이지로 이동
@@ -117,6 +120,7 @@ const submitComment = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
       body: JSON.stringify({ content: newComment.value }),
+      mode: 'cors'
     });
 
     await fetchBoardData();
@@ -141,6 +145,7 @@ const toggleBookmark = async (targetId: number, target: string) => {
         targetId,
         target,
       },
+      mode: 'cors'
     });
 
     // 북마크 상태를 반전

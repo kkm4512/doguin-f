@@ -148,6 +148,7 @@ const createOutsourcing = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined, // Content-Type은 생략 (FormData가 자동 설정)
       body: formData,
+      mode: 'cors'
     });
 
     // 성공 메시지 및 페이지 이동

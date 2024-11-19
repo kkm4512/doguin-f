@@ -72,6 +72,7 @@ const reportContent = async () => {
       method: 'GET',
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
 
   
@@ -90,6 +91,7 @@ const reportContent = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
       body: payload,
+      mode: 'cors'
     });
 
     alert('신고가 접수되었습니다.');

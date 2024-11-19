@@ -58,6 +58,7 @@ const fetchPortfolios = async (page: number = 0) => {
         size: 3,
         sort: 'desc',
       },
+      mode: 'cors'
     });
 
     portfolios.value = response.data.content;

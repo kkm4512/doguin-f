@@ -65,6 +65,7 @@ const fetchOutsourcingData = async () => {
     outsourcingData.value = await $fetch(`/outsourcings/${route.params.id}`, {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
 
     // 북마크 상태 가져오기
@@ -75,6 +76,7 @@ const fetchOutsourcingData = async () => {
         targetId: route.params.id,
         target: 'OUTSOURCING',
       },
+      mode: 'cors'
     });
 
     if (outsourcingData.value?.data) {
@@ -94,6 +96,7 @@ const deleteOutsourcing = async () => {
       method: 'DELETE',
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
+      mode: 'cors'
     });
     alert('외주가 삭제되었습니다.');
     router.push("/outsourcings/recruitment"); // 삭제 후 외주 목록 페이지로 이동
@@ -123,6 +126,7 @@ const toggleBookmark = async (targetId: number, target: string) => {
         targetId,
         target,
       },
+      mode: 'cors'
     });
 
     outsourcingData.value.data.isBookmarked = !outsourcingData.value.data.isBookmarked;
@@ -152,6 +156,7 @@ const createMatching = async () => {
         portfolioId: selectedPortfolioId.value,
         outsourcingId: outsourcingId.value,
       },
+      mode: 'cors'
     });
 
     alert('매칭이 성공적으로 요청되었습니다.');

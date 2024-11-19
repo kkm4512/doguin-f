@@ -33,7 +33,8 @@ const fetchOutsourcings = async (page: number) => {
         page: page - 1, // API는 0-based page 처리
         size: 10,
         sort: 'desc',
-      }
+      },
+      mode: 'cors'
     });
     outsourcings.value = response.data.content.map((item) => ({
       id: item.id,

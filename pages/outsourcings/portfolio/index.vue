@@ -86,6 +86,7 @@ const createPortfolio = async () => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
       body: formData,
+      mode: 'cors'
     });
     alert('포트폴리오가 성공적으로 생성되었습니다.');
     router.push('/'); // 생성 후 목록 페이지로 이동
