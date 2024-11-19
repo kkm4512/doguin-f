@@ -138,8 +138,8 @@ const toggleBookmark = async (targetId: number, target: string) => {
       baseURL: baseApi,
       headers: token ? { Authorization: token } : undefined,
       body: {
-        targetId, // 북마크할 대상 ID
-        target,   // 북마크 타겟 타입
+        targetId,
+        target,
       },
     });
 

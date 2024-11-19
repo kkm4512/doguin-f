@@ -86,16 +86,18 @@ const errorMessage = ref('');
 const signin = async () => {
   const { public: { baseApi } } = useRuntimeConfig();
   try {
-    const response = await fetch(`${baseApi}/auth/signin`, {
+    const response = await $fetch('/auth/signin', {
+      baseURL: baseApi,
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Accept' : 'application/json'
       },
       body: JSON.stringify({ email: email.value, password: password.value }),
+      mode: 'cors'
     });
 
-    const token = response.headers.get('Authorization');
+    const token = response.data;
     if (token) {
       console.log('토큰:', token);
       localStorage.setItem('jwt', token);
